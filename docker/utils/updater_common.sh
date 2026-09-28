@@ -122,6 +122,12 @@ semver_compare() {
         return 0
     fi
 
+    # sort -V ranks 1.2.3-beta.1 above 1.2.3, semver says the release wins
+    if [ "${v1%%-*}" = "${v2%%-*}" ]; then
+        [ "$v1" = "${v1%%-*}" ] && return 1
+        [ "$v2" = "${v2%%-*}" ] && return 2
+    fi
+
     # Use sort -V to find the "largest" version
     local highest=$(printf "%s\n%s" "$v1" "$v2" | sort -V | tail -n1)
 
