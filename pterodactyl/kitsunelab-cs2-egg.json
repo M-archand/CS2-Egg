@@ -172,6 +172,16 @@
       "field_type": "text"
     },
     {
+      "name": "SwiftlyS2 Release Channel",
+      "description": "stable = latest Release. beta = newest Pre-release (or a Release, when it is newer). Switching from beta to stable installs the latest stable on next restart, even if it is an older version. Overrides Allow Prerelease Updates for SwiftlyS2.",
+      "env_variable": "SWIFTLY_CHANNEL",
+      "default_value": "stable",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|in:stable,beta",
+      "field_type": "text"
+    },
+    {
       "name": "ModSharp",
       "description": "Standalone C# scripting platform with .NET 9 runtime. Compatible with MetaMod only. Incompatible with CSS and SwiftlyS2 (auto-disabled if enabled). Automatically updates on server restart while enabled.",
       "env_variable": "INSTALL_MODSHARP",
@@ -183,7 +193,7 @@
     },
     {
       "name": "Allow Prerelease Updates",
-      "description": "Allow downloading prerelease/beta versions of frameworks (CSS, SwiftlyS2, ModSharp) from GitHub. Warning: Prereleases may be unstable.",
+      "description": "Allow downloading prerelease/beta versions of frameworks (CSS, ModSharp) from GitHub. SwiftlyS2 uses its own Release Channel setting. Warning: Prereleases may be unstable.",
       "env_variable": "PRERELEASE",
       "default_value": "0",
       "user_viewable": true,

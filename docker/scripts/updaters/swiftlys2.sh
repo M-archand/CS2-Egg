@@ -14,13 +14,33 @@ update_swiftly() {
     mkdir -p "$OUTPUT_DIR" "$temp_dir"
     rm -rf "$temp_dir"/*
 
+    # SWIFTLY_CHANNEL (stable|beta) wins, unset on older eggs, so fall back to PRERELEASE
+    local channel="${SWIFTLY_CHANNEL,,}"
+    if [ -z "$channel" ]; then
+        [ "${PRERELEASE:-0}" = "1" ] && channel="beta" || channel="stable"
+    elif [ "$channel" != "stable" ] && [ "$channel" != "beta" ]; then
+        log_message "Unknown SWIFTLY_CHANNEL '$SWIFTLY_CHANNEL' - using stable" "warning"
+        channel="stable"
+    fi
+
+    # beta reads the full release list, so it gets the newest pre-release (or a newer stable)
+    local prerelease=0
+    [ "$channel" = "beta" ] && prerelease=1
+
     local release_info
-    release_info=$(fetch_release "SwiftlyS2" "$REPO" "linux.*with-runtimes\\.zip") || return 1
+    release_info=$(PRERELEASE=$prerelease fetch_release "SwiftlyS2" "$REPO" "linux.*with-runtimes\\.zip") || return 1
 
     local new_version=$(echo "$release_info" | jq -r '.version // empty')
     local asset_url=$(echo "$release_info" | jq -r '.asset_url // empty')
 
-    needs_update "SwiftlyS2" "Swiftly" "$new_version" || return 0
+    # stable tags have no suffix, so a suffixed install means the user just left beta:
+    # take the latest stable even if it is older, instead of waiting for it to catch up
+    local current_version=$(get_current_version "Swiftly")
+    if [ "$channel" = "stable" ] && [ -n "$new_version" ] && [[ "$current_version" == *-* ]]; then
+        log_message "SwiftlyS2 channel is stable - replacing beta $current_version with $new_version" "info"
+    else
+        needs_update "SwiftlyS2" "Swiftly" "$new_version" || return 0
+    fi
 
     if [ -z "$asset_url" ]; then
         log_message "No suitable asset found for $REPO" "error"

@@ -177,11 +177,22 @@ CounterStrikeSharp can coexist with:
 ### How It Works
 
 1. Checks current SwiftlyS2 version
-2. Fetches latest from swiftly-solution/swiftlys2
+2. Fetches latest from swiftly-solution/swiftlys2 on the selected release channel
 3. Downloads with-runtimes-linux.zip
 4. Extracts swiftlys2 directory
 5. Updates `gameinfo.gi` to load SwiftlyS2
 6. Removes old metamod VDF file if present (legacy cleanup)
+
+### Release Channel
+
+`SWIFTLY_CHANNEL` picks which builds SwiftlyS2 updates to:
+
+| Value    | Installs                                                      |
+| -------- | ------------------------------------------------------------- |
+| `stable` | Latest GitHub Release (default)                               |
+| `beta`   | Newest GitHub Pre-release, or a Release when it is newer      |
+
+Switching from `beta` to `stable` installs the latest stable on the next restart, even when it is older than the installed beta. `SWIFTLY_CHANNEL` overrides `PRERELEASE` for SwiftlyS2. Servers on an older egg without the variable still follow `PRERELEASE`.
 
 ### Console Output
 
