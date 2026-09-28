@@ -126,9 +126,15 @@ Game_LowViolence    csgo_lv
 
 1. Checks if MetaMod is enabled (warns if disabled)
 2. Checks current CSS version
-3. Fetches latest release from roflmuffin/CounterStrikeSharp
+3. Fetches latest release from roflmuffin/CounterStrikeSharp (or `CSS_REPO` if set)
 4. Downloads with-runtime Linux build
 5. Extracts and updates version tracking
+
+### Using a Fork
+
+Set `CSS_REPO` in the **Startup** tab to your fork (e.g. `yourname/CounterStrikeSharp`). Leave it blank to use upstream.
+
+Your fork must publish GitHub Releases (not only tags) with a `-with-runtime-linux-*.zip` asset that has `addons/` at its root. The updater never downgrades: if your fork's tag is lower than the installed version, delete the `CSS=` line in `/home/container/egg/versions.txt` to force a reinstall.
 
 ### Console Output
 

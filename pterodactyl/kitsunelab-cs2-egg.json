@@ -152,6 +152,16 @@
       "field_type": "text"
     },
     {
+      "name": "CounterStrikeSharp Repository",
+      "description": "GitHub repository (owner/name) to pull CounterStrikeSharp releases from. Leave blank for roflmuffin/CounterStrikeSharp. Set to your fork to auto-update from it; its releases must include a -with-runtime-linux-*.zip asset.",
+      "env_variable": "CSS_REPO",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|regex:/^[A-Za-z0-9_.-]+\\/[A-Za-z0-9_.-]+$/",
+      "field_type": "text"
+    },
+    {
       "name": "SwiftlyS2",
       "description": "Standalone C# framework for Source Engine 2 servers (no MetaMod required). Compatible with CSS. Incompatible with ModSharp. Automatically updates on server restart while enabled.",
       "env_variable": "INSTALL_SWIFTLY",
